@@ -1,20 +1,14 @@
 FROM python:3.10-slim
 
-# Sistem bağımlılıklarını yükle
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    git \
-    curl \
-    && rm -rf /var/lib/apt/lists/*
-
-# JupyterLab kur
-RUN pip install --no-cache-dir jupyterlab
+# Gerekli paketleri yükle
+RUN apt-get update && apt-get install -y git && \
+    pip install --no-cache-dir jupyterlab
 
 # Çalışma dizini
-WORKDIR /app
+WORKDIR /workspace
 
-# Portu aç
+# Varsayılan port
 EXPOSE 8888
 
-# Token olmadan JupyterLab'i başlat
-CMD ["jupyter", "lab", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--NotebookApp.token=''", "--NotebookApp.password=''"]
+# JupyterLab'i token ve password olmadan başlat, --allow-root ile
+CMD ["jupyter", "lab", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--NotebookApp.token=''", "--NotebookApp.password=''", "--allow-root"]
